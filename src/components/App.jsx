@@ -1,22 +1,39 @@
 import React, { Component } from 'react'
 export default class App extends Component {
-  fetchData() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dataWeather: null,
+    }
+
+  };
+
+
+
+  componentDidMount() {
     fetch('http://localhost:3000/rochelle-17.json')
       .then((response) => {
-        // L'objet response renvoyé par fetch possède une méthode .json()
-        // qui retourne une Promise, et qui convertit la réponse JSON
-        // en objet Javascript.
         return response.json()
       })
-      .then((obj) => {
-        console.log('Javascript object: ', obj)
+      .then((data) => {
+        this.setState({ dataWeather: data });
+
       })
   }
+
   render() {
+    console.log(this.state.dataWeather)
     return (
       <div>
-        Hello world !
-        <button onClick={() => this.fetchData()}>button</button>
+
+
+        <h1>{this.state.dataWeather ?.city_info.name}</h1>
+        <h2>{this.state.dataWeather ?.current_condition.date}</h2>
+        <p>Le temps est {this.state.dataWeather ?.current_condition.condition}</p>
+        <p>Le temps est humide à {this.state.dataWeather ?.current_condition.humidity}</p>
+        <p>Le température est à {this.state.dataWeather ?.current_condition.tmp}</p>
+
+
       </div>
 
     )
