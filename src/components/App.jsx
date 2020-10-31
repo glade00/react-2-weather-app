@@ -1,4 +1,7 @@
+import Resume from './Resume'
 import React, { Component } from 'react'
+
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -6,11 +9,7 @@ export default class App extends Component {
       dataWeather: null,
       date: new Date()
     };
-
-
   };
-
-
 
   componentDidMount() {
     this.timerID = setInterval(fetch('https://www.prevision-meteo.ch/services/json/rochelle-17')
@@ -31,23 +30,15 @@ export default class App extends Component {
     clearInterval(this.timerID);
   }
 
-
   render() {
+    console.log(this.state.dataWeather)
+
     return (
       <div>
-
-
-        <h1>{this.state.dataWeather ?.city_info.name}</h1>
-        <h2>{this.state.dataWeather ?.current_condition.date}</h2>
-        <p>Le temps est {this.state.dataWeather ?.current_condition.condition}</p>
-        <p>Le temps est humide à {this.state.dataWeather ?.current_condition.humidity}</p>
-        <p>Le température est à {this.state.dataWeather ?.current_condition.tmp} °C</p>
+        {Resume(this.state.dataWeather)}
 
         <h2>Dernière mise à jour à {this.state.date.getHours()} heures.</h2>
-
-
-
-      </div>
+      </div >
 
 
     )
