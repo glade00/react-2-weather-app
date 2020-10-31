@@ -4,25 +4,35 @@ export default class App extends Component {
     super(props);
     this.state = {
       dataWeather: null,
-    }
+      date: new Date()
+    };
+
 
   };
 
 
 
   componentDidMount() {
-    fetch('http://localhost:3000/rochelle-17.json')
+    this.timerID = setInterval(fetch('https://www.prevision-meteo.ch/services/json/rochelle-17')
       .then((response) => {
         return response.json()
       })
       .then((data) => {
-        this.setState({ dataWeather: data });
+        this.setState({
+          dataWeather: data,
+          date: new Date()
+        });
 
-      })
+      }),
+      10000
+    );
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
   }
 
+
   render() {
-    console.log(this.state.dataWeather)
     return (
       <div>
 
@@ -31,10 +41,14 @@ export default class App extends Component {
         <h2>{this.state.dataWeather ?.current_condition.date}</h2>
         <p>Le temps est {this.state.dataWeather ?.current_condition.condition}</p>
         <p>Le temps est humide à {this.state.dataWeather ?.current_condition.humidity}</p>
-        <p>Le température est à {this.state.dataWeather ?.current_condition.tmp}</p>
+        <p>Le température est à {this.state.dataWeather ?.current_condition.tmp} °C</p>
+
+        <h2>Dernière mise à jour à {this.state.date.getHours()} heures.</h2>
+
 
 
       </div>
+
 
     )
   }
