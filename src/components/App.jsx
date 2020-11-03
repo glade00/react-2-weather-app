@@ -8,12 +8,24 @@ export default class App extends Component {
     super(props);
     this.state = {
       dataWeather: null,
-      date: new Date()
-    };
+      date: new Date(),
+      updateWeather: 10000,
+      isLoading: false
+    }
+    this.fetchData = this.fetchData.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   };
 
-  componentDidMount() {
-    this.timerID = setInterval(fetch('https://www.prevision-meteo.ch/services/json/rochelle-17')
+  handleChange(e) {
+    this.setState({
+      updateWeather: e.target.value,
+    });
+  }
+  fetchData() {
+    this.setState({ isLoading: true });
+    fetch('https://www.prevision-meteo.ch/services/json/rochelle-17')
       .then((response) => {
         return response.json()
       })
@@ -22,13 +34,22 @@ export default class App extends Component {
           dataWeather: data,
           date: new Date()
         });
-
-      }),
-      10000
-    );
+      })
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
   }
-  componentWillUnmount() {
+
+  componentDidMount() {
+    this.fetchData();
+    this.setUpTime();
+  }
+  setUpTime() {
     clearInterval(this.timerID);
+    this.timerID = setInterval(() => this.fetchData(), this.state.updateWeather);
+  }
+  handleClick(value) {
+    this.setState({ updateWeather: value }, this.setUpTime());
   }
 
   render() {
@@ -39,8 +60,9 @@ export default class App extends Component {
         {Resume(this.state.dataWeather)}
 
 
-        <h2>Dernière mise à jour à {this.state.date.getHours()} heures.</h2>
-
+        <h2>Dernière mise à jour à {this.state.date.toLocaleTimeString()} heures.</h2>
+        <input type="text" value={this.state.updateWeather} onChange={this.handleChange} />
+        <button onClick={this.handleClick}>Modifier</button>
         <h3>Les prévisions pour les jours prochains : </h3>
         {Previsions(this.state.dataWeather)}
 
