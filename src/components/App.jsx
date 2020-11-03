@@ -1,5 +1,5 @@
 import Resume from './Resume'
-
+import Previsions from './Previsions'
 import React, { Component } from 'react'
 
 
@@ -38,7 +38,13 @@ export default class App extends Component {
       <div>
         {Resume(this.state.dataWeather)}
 
+
         <h2>Dernière mise à jour à {this.state.date.getHours()} heures.</h2>
+
+        <h3>Les prévisions pour les jours prochains : </h3>
+        {Previsions(this.state.dataWeather)}
+
+
       </div >
 
 

@@ -1,0 +1,21 @@
+.prevision{
+  background-color: black;
+  color: white;
+  border-radius: 20px;
+  width: 21%;
+  margin: 2%;
+  font-size: 16px;
+  padding: 20px;
+}
+.previsions h2{
+margin: 0px 0px 10px 0px;
+}
+.previsions {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  }
+.previsions p {
+  margin: 0;
+  padding: 0;
+}
